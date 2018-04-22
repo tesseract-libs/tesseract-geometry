@@ -1,6 +1,6 @@
-# TesseractGeometry
+# Tesseract/Geometry
 
-**TODO: Add description**
+Common geometry utilities for Tesseract library bundle.
 
 ## Installation
 
