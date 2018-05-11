@@ -1,21 +1,36 @@
 defmodule Tesseract.Geometry.Box do
     @type t :: {{number, number, number}, {number, number, number}}
 
-    def add({{a_x1, a_y1, a_z1}, {a_x2, a_y2, a_z2}}, {{b_x1, b_y1, b_z1}, {b_x2, b_y2, b_z2}}) do
+    @spec union(t, t) :: t
+    def union({{a_x1, a_y1, a_z1}, {a_x2, a_y2, a_z2}}, {{b_x1, b_y1, b_z1}, {b_x2, b_y2, b_z2}}) do
         {
             {min(a_x1, b_x1), min(a_y1, b_y1), min(a_z1, b_z1)},
             {max(a_x2, b_x2), max(a_y2, b_y2), max(a_z2, b_z2)}
         }
     end
 
-    def add(boxes) when is_list(boxes) do
-        boxes |> Enum.reduce(fn (container, box) -> add(container, box) end)
+    def union(boxes) when is_list(boxes) do
+        boxes |> Enum.reduce(fn (container, box) -> union(container, box) end)
     end
 
-    def volume_increase(box_a, box_b) do
-        combined = add(box_a, box_b)
+    @spec intersection(t, t) :: t | nil
+    def intersection({{a_x1, a_y1, a_z1}, {a_x2, a_y2, a_z2}} = a, {{b_x1, b_y1, b_z1}, {b_x2, b_y2, b_z2}} = b) do
+        if intersects?(a, b) do
+            {
+                {max(a_x1, b_x1), max(a_y1, b_y1), max(a_z1, b_z1)},
+                {min(a_x2, b_x2), min(a_y2, b_y2), min(a_z2, b_z2)}
+            }
+        else
+            nil
+        end
+    end
 
-        volume(combined) - volume(box_a)
+    def intersects?({{a_x1, a_y1, a_z1}, {a_x2, a_y2, a_z2}}, {{b_x1, b_y1, b_z1}, {b_x2, b_y2, b_z2}}) do
+        (
+            (min(a_x1, a_x2) <= max(b_x1, b_x2) && max(a_x1, a_x2) >= min(b_x1, b_x2)) &&
+            (min(a_y1, a_y2) <= max(b_y1, b_y2) && max(a_y1, a_y2) >= min(b_y1, b_y2)) &&
+            (min(a_z1, a_z2) <= max(b_z1, b_z2) && max(a_z1, a_z2) >= min(b_z1, b_z2))
+        )
     end
 
     @spec volume(t) :: number
@@ -23,11 +38,20 @@ defmodule Tesseract.Geometry.Box do
         (x2 - x1) * (y2 - y1) * (z2 - z1) 
     end
 
-    def intersects({{a_x1, a_y1, a_z1}, {a_x2, a_y2, a_z2}}, {{b_x1, b_y1, b_z1}, {b_x2, b_y2, b_z2}}) do
-        (
-            (min(a_x1, a_x2) <= max(b_x1, b_x2) && max(a_x1, a_x2) >= min(b_x1, b_x2)) &&
-            (min(a_y1, a_y2) <= max(b_y1, b_y2) && max(a_y1, a_y2) >= min(b_y1, b_y2)) &&
-            (min(a_z1, a_z2) <= max(b_z1, b_z2) && max(a_z1, a_z2) >= min(b_z1, b_z2))
-        )
+    def intersection_volume(box, other_boxes) when is_list(other_boxes) do
+        other_boxes
+        |> Enum.map(&intersection_volume(box, &1))
+        |> Enum.sum
+    end
+
+    @spec intersection_volume(t, t) :: number | nil
+    def intersection_volume(box_a, box_b) do
+        case intersection(box_a, box_b) do
+            nil -> 
+                0
+
+            intersection_box -> 
+                volume(intersection_box)
+        end
     end
 end
