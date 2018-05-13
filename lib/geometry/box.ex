@@ -38,12 +38,6 @@ defmodule Tesseract.Geometry.Box do
         (x2 - x1) * (y2 - y1) * (z2 - z1) 
     end
 
-    def intersection_volume(box, other_boxes) when is_list(other_boxes) do
-        other_boxes
-        |> Enum.map(&intersection_volume(box, &1))
-        |> Enum.sum
-    end
-
     @spec intersection_volume(t, t) :: number | nil
     def intersection_volume(box_a, box_b) do
         case intersection(box_a, box_b) do
