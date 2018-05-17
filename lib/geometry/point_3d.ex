@@ -4,7 +4,7 @@ defmodule Tesseract.Geometry.Point3D do
     @type t :: {number, number, number}
 
     @spec mbb(t) :: Box.t
-    def mbb({x, y, z} = point) do
+    def mbb({_, _, _} = point) do
         {point, point}
     end
 

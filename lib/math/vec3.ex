@@ -11,19 +11,19 @@ defmodule Tesseract.Math.Vec3 do
     {x, y, z}
   end
 
-  @sec add(t, t) :: t
+  @spec add(t, t) :: t
   def add({a_x, a_y, a_z}, {b_x, b_y, b_z}) do
-    {a_x + b_x, a_y + b_z, a_z + b_z}
+    {a_x + b_x, a_y + b_y, a_z + b_z}
   end
 
   @spec subtract(t, t) :: t
   def subtract({a_x, a_y, a_z}, {b_x, b_y, b_z}) do
-    {a_x - b_x, a_y - b_z, a_z - b_z}
+    {a_x - b_x, a_y - b_y, a_z - b_z}
   end
 
   @spec multiply(t, t) :: t
   def multiply({a_x, a_y, a_z}, {b_x, b_y, b_z}) do
-    {a_x * b_x, a_y * b_z, a_z * b_z}
+    {a_x * b_x, a_y * b_y, a_z * b_z}
   end
 
   @spec scale(t, number) :: t
@@ -52,6 +52,6 @@ defmodule Tesseract.Math.Vec3 do
 
   @spec normalize(t) :: t
   def normalize(a) do
-    scale(a, 1 / length(a))
+    scale(a, 1 / __MODULE__.length(a))
   end
 end

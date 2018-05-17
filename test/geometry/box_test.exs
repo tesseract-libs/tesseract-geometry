@@ -72,17 +72,4 @@ defmodule Tesseract.Geometry.BoxTest do
     8 = Box.intersection_volume({{-2, -2, -2}, {0, 0, 0}}, {{-2, -2, -2}, {0, 0, 0}})
     8 = Box.intersection_volume({{-2, -2, -2}, {0, 0, 0}}, {{-2, -2, -2}, {2, 2, 2}})
   end
-
-  test "Intersection volume between a box and a list of other boxes is computed correctly." do
-    10 = Box.intersection_volume(
-      {{-2, -2, -2}, {0, 0, 0}}, 
-      [
-        {{-2, -2, -2}, {0, 0, 0}}, 
-        {{-2, -2, -2}, {-1, -1, -1}},
-        {{-3, -3, -3}, {-1, -1, -1}},
-        {{0, 0, 0}, {1, 1, 1}},
-        {{1, 1, 1}, {4, 4, 4}}
-      ]
-    )
-  end
 end
