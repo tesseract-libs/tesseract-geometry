@@ -1,4 +1,6 @@
 defmodule Tesseract.Geometry.Box do
+    alias Tesseract.Math.Vec3
+
     @type t :: {{number, number, number}, {number, number, number}}
 
     @spec union(t, t) :: t
@@ -47,5 +49,11 @@ defmodule Tesseract.Geometry.Box do
             intersection_box -> 
                 volume(intersection_box)
         end
+    end
+
+    @spec center(t) :: Vec3.t
+    def center({a, b}) do
+        diag = b |> Vec3.subtract(a) |> Vec3.scale(0.5)
+        a |> Vec3.add(diag)
     end
 end

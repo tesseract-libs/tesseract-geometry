@@ -72,4 +72,12 @@ defmodule Tesseract.Geometry.BoxTest do
     8 = Box.intersection_volume({{-2, -2, -2}, {0, 0, 0}}, {{-2, -2, -2}, {0, 0, 0}})
     8 = Box.intersection_volume({{-2, -2, -2}, {0, 0, 0}}, {{-2, -2, -2}, {2, 2, 2}})
   end
+
+  test "Center of a box is computed correctly." do
+    {0.5, 0.5, 0.5} = Box.center({{0, 0, 0}, {1, 1, 1}})
+    {-0.5, -0.5, -0.5} = Box.center({{-1, -1, -1}, {0, 0, 0}})
+
+    {-3.0, -3.0, -3.0} = Box.center({{-4, -4, -4}, {-2, -2, -2}})
+    {0.5, -2.0, -1.0} = Box.center({{-2, -3, -4}, {3, -1, 2}})
+  end
 end
