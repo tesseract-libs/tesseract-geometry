@@ -1,15 +1,16 @@
 defmodule Tesseract.Geometry.Point3D do
-    alias Tesseract.Geometry.Box
+    alias Tesseract.Geometry.AABB3
+    alias Tesseract.Math.Vec3
 
-    @type t :: {number, number, number}
+    @type t :: Vec3.t()
 
-    @spec mbb(t) :: Box.t
+    @spec mbb(t) :: AABB3.t()
     def mbb({_, _, _} = point) do
-        {point, point}
+        AABB3.make(point, point)
     end
 
-    @spec mbb(t, number) :: Box.t
+    @spec mbb(t, number) :: AABB3.t()
     def mbb({x, y, z}, padding) do
-        {{x - padding, y - padding, z - padding}, {x + padding, y + padding, z + padding}}
+        AABB3.make({x - padding, y - padding, z - padding}, {x + padding, y + padding, z + padding})
     end
 end
