@@ -4,7 +4,7 @@ defmodule TesseractGeometry.MixProject do
   def project do
     [
       app: :tesseract_geometry,
-      version: "0.2.1",
+      version: "0.2.2",
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -22,7 +22,9 @@ defmodule TesseractGeometry.MixProject do
   end
 
   defp deps do
-    []
+    [
+      {:ex_doc, ">= 0.0.0", only: :dev}
+    ]
   end
 
   defp description() do
