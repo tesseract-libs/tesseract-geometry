@@ -2,14 +2,13 @@ defmodule Tesseract.Math.Vec3 do
   @type t :: {number, number, number}
 
   @spec make() :: t
-  def make() do
-    {0.0, 0.0, 0.0}
-  end
+  def make(), do: {0.0, 0.0, 0.0}
 
   @spec make(number, number, number) :: t
-  def make(x, y, z) do
-    {x, y, z}
-  end
+  def make(x, y, z), do: {x, y, z}
+  
+  @spec make({number, number, number}) :: t
+  def make({x, y, z}), do: {x, y, z}
 
   @spec add(t, t) :: t
   def add({a_x, a_y, a_z}, {b_x, b_y, b_z}) do
