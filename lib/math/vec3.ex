@@ -10,6 +10,13 @@ defmodule Tesseract.Math.Vec3 do
   @spec make({number, number, number}) :: t
   def make({x, y, z}), do: {x, y, z}
 
+  def x({x_value, _y_value, _z_value}), do: x_value
+  def x({_x_value, y_value, z_value}, x_value), do: {x_value, y_value, z_value}
+  def y({_x_value, y_value, _z_value}), do: y_value
+  def y({x_value, _y_value, z_value}, y_value), do: {x_value, y_value, z_value}
+  def z({_x_value, _y_value, z_value}), do: z_value
+  def z({x_value, y_value, _z_value}, z_value), do: {x_value, y_value, z_value}
+
   @spec add(t, t) :: t
   def add({a_x, a_y, a_z}, {b_x, b_y, b_z}) do
     {a_x + b_x, a_y + b_y, a_z + b_z}
@@ -42,6 +49,10 @@ defmodule Tesseract.Math.Vec3 do
       a_z * b_x - a_x * b_z,
       a_x * b_y - a_y * b_x
     }
+  end
+
+  def angle(a, b) do
+    :math.acos(dot(a,b) / (__MODULE__.length(a) * __MODULE__.length(b)))
   end
 
   @spec length(t) :: number
